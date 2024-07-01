@@ -1,6 +1,6 @@
 FROM node:latest
 WORKDIR /app
-ADD . .
-RUN npm install -g serve
+COPY . .
+RUN npm install
 EXPOSE 5000
-CMD "serve"
+CMD ["npm", "start"]
