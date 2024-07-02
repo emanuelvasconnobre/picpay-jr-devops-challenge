@@ -10,8 +10,8 @@ services:
   reader:
     build: services/reader
     ports:
-    - "8081:8081"
-    networks:
+    - "8080:8080"
+    networks: 
     - frontend
     - backend
 
