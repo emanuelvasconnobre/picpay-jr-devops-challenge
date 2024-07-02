@@ -1,32 +1,19 @@
-# Desafio DevOps jr PicPay
+# Primeira impressão
 
-Obrigado pelo interesse em fazer parte do nosso time! Preparamos este desafio com carinho para ajudar a entender um pouco mais dos seus conhecimentos na área de DevOps/SRE
+A partir do momento que abri o projeto, fui direto para o arquivo docker-compose.yaml verificar se estava com a sintaxe correta, vi que as networks estavam emparalhadas, adaptei do meu jeito. Após isso fui olhar como estava o fronend por centralizar o uso dos serviços.
 
-Se não entender algum conceito ou parte do problema, não é motivo para se preocupar! Queremos que faça o desafio até onde souber.
+# Frontend
 
-No mais, divirta-se :D
+Ao abrir a pasta do frontend, fui olhar o Dockerfile, vi que estava instalando a biblioteca "serve" globalmente na imagem, o que não é o correto, fiz instalar todas as dependências redigidas no arquivo "package.json" usando o comando "npm install". O outro erro que encontrei no Dockerfile foi no "entrypoint" da imagem, o comando estava somente "serve", adaptei para usar o "npm start".
 
-## Conteúdo do repositório
-Na pasta `services` deste repositório existem 3 aplicações, um frontend que se comunica com um backend go e um em python, e estes se comunicam com um Redis para troca de informações. Tudo isso é orquestrado pelo docker-compose na raiz do repositório.
+# Writer
 
-As aplicações contém falhas propositais, de código, projeto, imagem docker, etc. Embora cada aplicação funcione individualmente, o conjunto não sobe...
+Sem dúvidas o mais simples de resolver dos três para mim, somente tive que adicionar um arquivo .txt, que eu chamei de "requirement.txt", listando todas as bibliotecas importadas no arquivo main.py, logo em seguida adaptei o arquivo Dockerfile para instalar com "pip install -r requirement.txt" e fiz executar, através do nome reservado "CMD", o comando "python main.py".
 
-## O que deve ser feito?
+# Reader
 
-Faça um fork deste repositório e envie uma pull request contendo:
-- ajustes que fazem todas as aplicações subirem e se comunicarem
-- um README contendo os seus pensamentos ao longo do projeto
-- um desenho contendo os serviços que explique o funcionamento
+Esse foi o que mais demorou para eu resolver, nunca havia mexido com go até esse desafio. Meu primeiro reflexo foi ver se existia um gerenciador de pacotes/bibliotecas e um arquivo para geri-las, assim como o package.json do Node, vi que tinha um arquivo go.mod, aprendi a sintaxe e crie uma arquivo na pasta reader. Modifiquei o Dockerfile para instalar todas as dependências e deu tudo certo, porém quando o container executou deu um problema de sintaxe no código, rapidamente entendi que era por causa de versão, tentei pesquisar a biblioteca que deu problema, a "redis-go", vi nos logs da imagem que foi instalada a versão 6.15.4+imcompatible, uma versão depreciada, troquei para a versão 8 da biblioca, porém o erro persistiu pois no código de importação era chamada pela versão antiga ainda, substitui pela nomenclatura da versão 8 da biblioteca e funcionou.
 
-Faça commits ao longo do processo, queremos entender o seu modo de pensar! :)
+# Docker Compose
 
-Para a entrevista, separe também anotações contendo melhorias que faria em cada aplicação e o motivo. Não envie estas anotações na pull request.
-
-## Bibliografia recomendada
-https://docs.docker.com/engine/reference/builder/
-
-https://docs.docker.com/compose/compose-file/
-
-https://12factor.net/
-
-https://conventionalcommits.org/
+Após resolver os problemas iniciais deste arquivo anteriormente, ao resolver os problemas relacionado aos outros serviços vi que as portas foram trocadas, ajustei e no final foi resolvido o arquivo inteiro.
